@@ -22,6 +22,11 @@ namespace Luban.Job.Cfg.DataCreators
             return nullable && (o == null || (o is string s && s == "null"));
         }
 
+        private bool CheckDefault(object o)
+        {
+            return o == null || (o is string s && s.Length == 0);
+        }
+
         private static bool CreateBool(object x)
         {
             if (x is bool b)
@@ -40,6 +45,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(d))
+            {
+                return DBool.ValueOf(false);
+            }
             return DBool.ValueOf(CreateBool(d));
         }
 
@@ -49,6 +58,10 @@ namespace Luban.Job.Cfg.DataCreators
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
+            }
+            if (CheckDefault(x))
+            {
+                return DByte.Default;
             }
             if (!byte.TryParse(d.ToString(), out byte v))
             {
@@ -64,6 +77,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(x))
+            {
+                return DShort.Default;
+            }
             if (!short.TryParse(d.ToString(), out short v))
             {
                 throw new InvalidExcelDataException($"{d} 不是 short 类型值");
@@ -78,6 +95,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(x))
+            {
+                return DFshort.Default;
+            }
             if (!short.TryParse(d.ToString(), out short v))
             {
                 throw new InvalidExcelDataException($"{d} 不是 short 类型值");
@@ -91,6 +112,10 @@ namespace Luban.Job.Cfg.DataCreators
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
+            }
+            if (CheckDefault(d))
+            {
+                return DInt.Default;
             }
             var ds = d.ToString();
             //if (field?.Remapper is TEnum te)
@@ -114,6 +139,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(x))
+            {
+                return DFint.Default;
+            }
             var ds = d.ToString();
             //if (field?.Remapper is TEnum te)
             //{
@@ -135,6 +164,10 @@ namespace Luban.Job.Cfg.DataCreators
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
+            }
+            if (CheckDefault(x))
+            {
+                return DLong.Default;
             }
             var ds = d.ToString();
             //if (field?.Remapper is TEnum te)
@@ -158,6 +191,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(x))
+            {
+                return DFlong.Default;
+            }
             var ds = d.ToString();
             //if (field?.Remapper is TEnum te)
             //{
@@ -180,6 +217,10 @@ namespace Luban.Job.Cfg.DataCreators
             {
                 return null;
             }
+            if (CheckDefault(x))
+            {
+                return DFloat.Default;
+            }
             if (!float.TryParse(d.ToString(), out var v))
             {
                 throw new InvalidExcelDataException($"{d} 不是 float 类型值");
@@ -193,6 +234,10 @@ namespace Luban.Job.Cfg.DataCreators
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
+            }
+            if (CheckDefault(x))
+            {
+                return DDouble.Default;
             }
             if (!double.TryParse(d.ToString(), out var v))
             {

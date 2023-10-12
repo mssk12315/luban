@@ -19,6 +19,7 @@ namespace Luban.Job.Cfg.DataSources.Excel
         private int _curIndex;
 
         private readonly string _overrideDefault;
+        private bool _noSkip = true;
 
         public ExcelStream(List<Cell> datas, int fromIndex, int toIndex, string sep, string overrideDefault)
         {
@@ -168,6 +169,8 @@ namespace Luban.Job.Cfg.DataSources.Excel
 
         public int IncludeNullAndEmptySize => _toIndex - _curIndex + 1;
 
+        public void SetNoSkip(bool noSkip) { _noSkip = noSkip; }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -257,6 +260,10 @@ namespace Luban.Job.Cfg.DataSources.Excel
 
         private bool IsSkip(object x)
         {
+            if (_noSkip)
+            {
+                return false;
+            }
             return x == null || (x is string s && string.IsNullOrEmpty(s));
         }
 
