@@ -7,6 +7,7 @@ namespace Luban.Job.Common.Types
     public abstract class TType
     {
         public bool IsNullable { get; }
+        public bool IsReadEmpty { get; set; } = true;
 
         public Dictionary<string, string> Tags { get; }
 

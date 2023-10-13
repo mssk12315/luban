@@ -40,7 +40,7 @@ namespace Luban.Job.Cfg.DataCreators
         public DType Accept(TBool type, ExcelStream x)
         {
 
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -54,7 +54,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TByte type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -72,7 +72,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TShort type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -90,7 +90,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TFshort type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -108,7 +108,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TInt type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -134,7 +134,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TFint type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -160,7 +160,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TLong type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -186,7 +186,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TFlong type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -212,7 +212,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TFloat type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -230,7 +230,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TDouble type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -248,7 +248,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TEnum type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -262,7 +262,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TString type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             var s = ParseString(d);
             if (s == null)
             {
@@ -304,7 +304,7 @@ namespace Luban.Job.Cfg.DataCreators
             //x = SepIfNeed(type, x);
             x = TrySep(type, x);
 
-            string key = ParseString(x.Read());
+            string key = ParseString(x.Read(type.IsReadEmpty));
             if (key == null)
             {
                 if (type.IsNullable)
@@ -317,14 +317,14 @@ namespace Luban.Job.Cfg.DataCreators
                 }
             }
 
-            string text = ParseString(x.Read());
+            string text = ParseString(x.Read(type.IsReadEmpty));
             DataUtil.ValidateText(key, text);
             return new DText(key, text);
         }
 
         public DType Accept(TDateTime type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -338,7 +338,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TVector2 type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -348,7 +348,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TVector3 type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;
@@ -358,7 +358,7 @@ namespace Luban.Job.Cfg.DataCreators
 
         public DType Accept(TVector4 type, ExcelStream x)
         {
-            var d = x.Read();
+            var d = x.Read(type.IsReadEmpty);
             if (CheckNull(type.IsNullable, d))
             {
                 return null;

@@ -19,7 +19,7 @@ namespace Luban.Job.Cfg.DataSources.Excel
         private int _curIndex;
 
         private readonly string _overrideDefault;
-        private bool _noSkip = true;
+        private bool _noSkip = false;
 
         public ExcelStream(List<Cell> datas, int fromIndex, int toIndex, string sep, string overrideDefault)
         {

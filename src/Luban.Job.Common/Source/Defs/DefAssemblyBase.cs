@@ -299,7 +299,13 @@ namespace Luban.Job.Common.Defs
             // 去掉 rawType 两侧的匹配的 ()
             rawType = DefUtil.TrimBracePairs(rawType);
             var (type, tags) = DefUtil.ParseTypeAndVaildAttrs(rawType);
+            bool readEmpty = false;
 
+            if ( type.StartsWith('~'))
+            {
+                readEmpty = true;
+                type = type.Substring(1);
+            }
             if (type.EndsWith('?'))
             {
                 if (!SupportNullable)
@@ -317,49 +323,52 @@ namespace Luban.Job.Common.Defs
             {
                 nullable = false;
             }
+            TType dtype;
             switch (type)
             {
-                case "bool": return TBool.Create(nullable, tags);
+                case "bool": dtype = TBool.Create(nullable, tags); break;
                 case "uint8":
-                case "byte": return TByte.Create(nullable, tags);
+                case "byte": dtype = TByte.Create(nullable, tags); break;
                 case "int16":
-                case "short": return TShort.Create(nullable, tags);
+                case "short": dtype = TShort.Create(nullable, tags); break;
                 case "fint16":
-                case "fshort": return TFshort.Create(nullable, tags);
+                case "fshort": dtype = TFshort.Create(nullable, tags); break;
                 case "int32":
-                case "int": return TInt.Create(nullable, tags);
+                case "int": dtype = TInt.Create(nullable, tags); break;
                 case "fint32":
-                case "fint": return TFint.Create(nullable, tags);
+                case "fint": dtype = TFint.Create(nullable, tags); break;
                 case "int64":
-                case "long": return TLong.Create(nullable, tags, false);
-                case "bigint": return TLong.Create(nullable, tags, true);
+                case "long": dtype = TLong.Create(nullable, tags, false); break;
+                case "bigint": dtype = TLong.Create(nullable, tags, true); break;
                 case "fint64":
-                case "flong": return TFlong.Create(nullable, tags);
+                case "flong": dtype = TFlong.Create(nullable, tags); break;
                 case "float32":
-                case "float": return TFloat.Create(nullable, tags);
+                case "float": dtype = TFloat.Create(nullable, tags); break;
                 case "float64":
-                case "double": return TDouble.Create(nullable, tags);
-                case "bytes": return TBytes.Create(nullable, tags);
-                case "string": return TString.Create(nullable, tags);
-                case "text": return TText.Create(nullable, tags);
-                case "vector2": return TVector2.Create(nullable, tags);
-                case "vector3": return TVector3.Create(nullable, tags);
-                case "vector4": return TVector4.Create(nullable, tags);
+                case "double": dtype = TDouble.Create(nullable, tags); break;
+                case "bytes": dtype = TBytes.Create(nullable, tags); break;
+                case "string": dtype = TString.Create(nullable, tags); break;
+                case "text": dtype = TText.Create(nullable, tags); break;
+                case "vector2": dtype = TVector2.Create(nullable, tags); break;
+                case "vector3": dtype = TVector3.Create(nullable, tags); break;
+                case "vector4": dtype = TVector4.Create(nullable, tags); break;
                 case "time":
-                case "datetime": return SupportDatetimeType ? TDateTime.Create(nullable, tags) : throw new NotSupportedException($"只有配置支持datetime数据类型");
+                case "datetime": dtype = SupportDatetimeType ? TDateTime.Create(nullable, tags) : throw new NotSupportedException($"只有配置支持datetime数据类型"); break;
                 default:
                     {
-                        var dtype = GetDefTType(module, type, nullable, tags);
-                        if (dtype != null)
-                        {
-                            return dtype;
-                        }
-                        else
+                        dtype = GetDefTType(module, type, nullable, tags);
+                        if (dtype == null)
                         {
                             throw new ArgumentException($"invalid type. module:'{module}' type:'{type}'");
                         }
+                        break;
                     }
             }
+            if (dtype != null && readEmpty)
+            {
+                dtype.IsReadEmpty = readEmpty;
+            }
+            return dtype;
         }
 
         protected TMap CreateMapType(string module, Dictionary<string, string> tags, string keyValueType, bool isTreeMap)
