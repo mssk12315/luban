@@ -299,11 +299,11 @@ namespace Luban.Job.Common.Defs
             // 去掉 rawType 两侧的匹配的 ()
             rawType = DefUtil.TrimBracePairs(rawType);
             var (type, tags) = DefUtil.ParseTypeAndVaildAttrs(rawType);
-            bool readEmpty = false;
+            bool readEmpty = true;
 
             if ( type.StartsWith('~'))
             {
-                readEmpty = true;
+                readEmpty = false;
                 type = type.Substring(1);
             }
             if (type.EndsWith('?'))
@@ -364,7 +364,7 @@ namespace Luban.Job.Common.Defs
                         break;
                     }
             }
-            if (dtype != null && readEmpty)
+            if (dtype != null && readEmpty == false)
             {
                 dtype.IsReadEmpty = readEmpty;
             }
